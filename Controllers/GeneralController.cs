@@ -8,20 +8,30 @@ using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
+
 
 namespace ApiRestAlchemy.Controllers
 {
+    
 
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonajeController : ControllerBase
+    public class GeneralController : ControllerBase
     {
+
+
+
+
         private DatabaseContext _context;
 
-        public PersonajeController(DatabaseContext context)
+        public GeneralController(DatabaseContext context)
         {
             _context = context;
         }
+
+
 
 
         [HttpGet("/characters")]
@@ -33,6 +43,7 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
+
         [HttpGet("/movies")]
         public async Task<ActionResult<IEnumerable<PeliculaOserieDTO>>> GetPeliculasToDTO()
         {
@@ -41,13 +52,21 @@ namespace ApiRestAlchemy.Controllers
                 .ToListAsync();
         }
 
+        private static PersonajeDTO ChNameDTO(Personaje todoItem) =>
+        new PersonajeDTO
+        {
 
+            Nombre = todoItem.Nombre,
+            Imagen = todoItem.Imagen,
+
+        };
 
         private static PersonajeDTO PersonajeToDTO(Personaje todoItem) =>
         new PersonajeDTO
         {
           Nombre = todoItem.Nombre,
-          Imagen = todoItem.Imagen
+          Imagen = todoItem.Imagen,
+
         };
         private static PeliculaOserieDTO PeliculaOserieToDTO(PeliculaOserie peliculaOserie) =>
         new PeliculaOserieDTO
