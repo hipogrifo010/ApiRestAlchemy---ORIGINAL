@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PxhlhJvmHphqzOw3F6Oxn5UGud8gli2XTU5cm7FXSpG+t+rvSamVG8oYBkBLQaG2sffWSTdsUXH47XHFLQr5Xw==",
+  "dgSpecHash": "m8Fr4ZUwQJA5lMJHf+7Ux1ITP+Lt4WyfdWyvse/7qKLbcoJ/DngWF180FXwZ/LUbx0Y/cVGF6E4Qz6jxQFxvPg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\ApiRestAlchemy - ORIGINAL\\ApiRestAlchemy.csproj",
   "expectedPackageFiles": [
@@ -84,6 +84,7 @@
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
+    "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.linq.dynamic.core\\1.2.19\\system.linq.dynamic.core.1.2.19.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",

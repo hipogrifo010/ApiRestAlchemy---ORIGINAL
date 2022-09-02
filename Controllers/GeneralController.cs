@@ -1,26 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ApiRestAlchemy.Database;
 using ApiRestAlchemy.Models;
-using DB;
-using System.Net;
-using System.Security.Cryptography;
-using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using Microsoft.Extensions.Logging;
-
+using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Linq;
 
 namespace ApiRestAlchemy.Controllers
 {
-    
+
 
     [Route("api/[controller]")]
     [ApiController]
     public class GeneralController : ControllerBase
     {
-
 
 
 
@@ -32,8 +26,6 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-
-
         [HttpGet("/characters")]
         public async Task<ActionResult<IEnumerable<PersonajeDTO>>> GetCharactersToDTO()
         {
@@ -43,6 +35,75 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
+        [HttpGet("Characters")]
+
+        public async Task<ActionResult<List<PersonajeDTO>>> SearchCharacters([FromQuery] string? name, int? age, int? movies)
+        {
+
+            var personajeQueryable = _context.Personajes.AsQueryable();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                personajeQueryable = personajeQueryable.Where(x => x.Nombre.Contains(name));
+            }
+            if (age != null)
+            {
+                personajeQueryable = personajeQueryable.Where(x => x.Edad.Equals(age));
+            }
+
+            if (movies != null)
+            {
+                personajeQueryable = personajeQueryable.Where(x => x.MovieId.Equals(movies));
+
+            }
+
+
+            return await personajeQueryable
+                .Select(x => PersonajeToDTO(x))
+                .ToListAsync();
+        }
+
+
+        [HttpGet("Movies")]
+        
+        public async Task<ActionResult<List<PeliculaOserieDTO>>> SearchMovies([FromQuery] string? name, string? order,int? genre)
+        {
+
+            var personajeQueryable = _context.PeliculasOseries.AsQueryable();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                personajeQueryable = personajeQueryable.Where(x=>x.Titulo.Contains(name));
+            }
+
+            if (!string.IsNullOrEmpty(order))
+            {
+                if (order == "ASC")
+                {
+
+                    personajeQueryable = personajeQueryable.OrderBy("Titulo ascending");
+
+                }
+                if (order == "DESC")
+                {
+
+                    personajeQueryable = personajeQueryable.OrderBy("Titulo descending");
+
+                }
+            }
+
+            if (genre!=null)
+            {
+                    personajeQueryable = personajeQueryable.Where(x => x.GenreId.Equals(genre));
+
+            }
+
+
+            return await personajeQueryable
+                .Select(x => PeliculaOserieToDTO(x))
+                .ToListAsync();
+        }
+        
 
         [HttpGet("/movies")]
         public async Task<ActionResult<IEnumerable<PeliculaOserieDTO>>> GetPeliculasToDTO()
@@ -51,11 +112,12 @@ namespace ApiRestAlchemy.Controllers
                 .Select(x => PeliculaOserieToDTO(x))
                 .ToListAsync();
         }
-
+        
         private static PersonajeDTO ChNameDTO(Personaje todoItem) =>
         new PersonajeDTO
         {
 
+            CharacterId = todoItem.CharacterId,
             Nombre = todoItem.Nombre,
             Imagen = todoItem.Imagen,
 
@@ -64,6 +126,7 @@ namespace ApiRestAlchemy.Controllers
         private static PersonajeDTO PersonajeToDTO(Personaje todoItem) =>
         new PersonajeDTO
         {
+          CharacterId=todoItem.CharacterId,
           Nombre = todoItem.Nombre,
           Imagen = todoItem.Imagen,
 
@@ -74,6 +137,13 @@ namespace ApiRestAlchemy.Controllers
            Titulo= peliculaOserie.Titulo,
            Imagen= peliculaOserie.Imagen,
            FechaDeCreacion= peliculaOserie.FechaDeCreacion
+        };
+
+        private static GeneroDTO PeliculasPorGenero(Genero genero) =>
+        new GeneroDTO
+        {
+           
+            GenreId = genero.GenreId
         };
     }
 
