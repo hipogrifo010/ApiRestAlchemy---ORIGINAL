@@ -3,33 +3,31 @@ using ApiRestAlchemy.Database;
 using ApiRestAlchemy.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using System.Linq;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ApiRestAlchemy.Controllers
 {
 
 
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+
     [ApiController]
     public class GeneralController : ControllerBase
     {
 
-        public List<Personaje> personajeList { get; set; }
-        public dynamic ViewBag { get; }
         private DatabaseContext _context;
 
         public GeneralController(DatabaseContext context)
         {
             _context = context;
         }
-  
 
+        /// <acceso>
+        /// https://localhost:7105/Listado/characters
+        /// </Retorna Listado de personajes>
+        
 
         [HttpGet("/Listado/characters")]
         public async Task<ActionResult<IEnumerable<PersonajeDTO>>> ListadoPersonajes()
@@ -38,7 +36,16 @@ namespace ApiRestAlchemy.Controllers
                 .Select(x => PersonajeToDTO(x))
                 .ToListAsync();
         }
-        
+
+
+
+        /// <acceso>
+        /// Utilizar Query a partir de las siguientes URL
+        /// https://localhost:7105/Busqueda/Characters?name="NOMBRE"
+        /// https://localhost:7105/Busqueda/Characters?age="EDAD"
+        /// https://localhost:7105/Busqueda/Characters?movieId="MovieId"
+        /// </Retorna Query de busqueda de Characters>
+
 
         [HttpGet("/Busqueda/Characters")]
 
@@ -69,6 +76,11 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
+        /// <acceso>
+        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/DetalleCharacter/Woody"
+        /// https://localhost:7105/DetalleCharacter/
+        /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
+ 
         [HttpGet("/DetalleCharacter/{CharacterName}")]
         public ActionResult IndexCharacter(string CharacterName)
         {
@@ -98,7 +110,10 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-
+        /// <acceso>
+        /// https://localhost:7105/Listado/movies
+        /// </Retorna Listado de peliculas>
+        
         [HttpGet("/Listado/movies")]
         public async Task<ActionResult<IEnumerable<PeliculaOserieDTO>>> ListadoDePeliculas()
         {
@@ -107,6 +122,13 @@ namespace ApiRestAlchemy.Controllers
                 .ToListAsync();
         }
 
+
+        /// <acceso>
+        /// Utilizar Query a partir de las siguientes URL
+        /// https://localhost:7105/Busqueda/Movies?name="NOMBRE"
+        /// https://localhost:7105/Busqueda/Movies?order="ASC"or"DESC"
+        /// https://localhost:7105/Busqueda/Movies?genre="GenreId"
+        /// </Retorna Query de busqueda de Movies>
 
         [HttpGet("/Busqueda/Movies")]
         public async Task<ActionResult<List<PeliculaOserieDTO>>> SearchMovies([FromQuery] string? name, string? order, int? genre)
@@ -152,6 +174,11 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
+        /// <acceso>
+        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/DetalleCharacter/Shrek"
+        /// https://localhost:7105/DetalleMovie/
+        /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
+
         [HttpGet("/DetalleMovie/{MovieName}")]
         public ActionResult Index(string MovieName)
         {
@@ -174,7 +201,7 @@ namespace ApiRestAlchemy.Controllers
                                            x.personaje.PeliculaOserie.FechaDeCreacion,
                                            x.personaje.PeliculaOserie.Calificacion,
                                            x.personaje.Nombre
-                                         
+
                                          }));
 
         }
@@ -199,12 +226,6 @@ namespace ApiRestAlchemy.Controllers
         };
   
 
-        private static GeneroDTO PeliculasPorGenero(Genero genero) =>
-        new GeneroDTO
-        {
-           
-            GenreId = genero.GenreId
-        };
     }
 
 }

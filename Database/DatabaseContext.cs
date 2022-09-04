@@ -1,17 +1,17 @@
-﻿using ApiRestAlchemy.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using ApiRestAlchemy.Models;
+
 
 namespace ApiRestAlchemy.Database
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {
       
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
+        
         public DbSet<Personaje> Personajes { get; set; }
         public DbSet<PeliculaOserie> PeliculasOseries { get; set; }
         public DbSet<Genero> Generos { get; set; }
@@ -117,7 +117,7 @@ namespace ApiRestAlchemy.Database
             modelBuilder.Entity<Personaje>().ToTable("Personaje");
             modelBuilder.Entity<PeliculaOserie>().ToTable("PeliculaOserie");
             modelBuilder.Entity<Genero>().ToTable("Genero");
-
+            base.OnModelCreating(modelBuilder);
 
         }
         
