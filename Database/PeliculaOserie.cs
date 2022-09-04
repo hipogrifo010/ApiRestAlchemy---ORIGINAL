@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiRestAlchemy.Models
 {
+    [Table("PeliculaOserie")]
     public class PeliculaOserie
     {
 

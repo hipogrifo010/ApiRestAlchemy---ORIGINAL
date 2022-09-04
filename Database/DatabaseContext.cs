@@ -20,7 +20,11 @@ namespace ApiRestAlchemy.Database
            //en caso de usar CodeFirst a Sql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+         modelBuilder.Entity<Personaje>().HasOne(p => p.PeliculaOserie).WithMany().HasForeignKey(x=>x.MovieId);
+
             ///////////Peliculas////////////
+
+
             modelBuilder.Entity<PeliculaOserie>().HasData(
             new PeliculaOserie { 
                 MovieId = 1,
@@ -29,7 +33,8 @@ namespace ApiRestAlchemy.Database
                 FechaDeCreacion= "22/04/2001",
                 Calificacion = 4,
                 PersonajesAsociados="Shrek,Burro,Fiora",
-                GenreId = 1
+                GenreId = 1,
+                
             });
             modelBuilder.Entity<PeliculaOserie>().HasData(
             new PeliculaOserie { 

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiRestAlchemy.Models
 {
+    [Table("Genero")]
     public class Genero
     {
         [Key]
@@ -13,7 +14,7 @@ namespace ApiRestAlchemy.Models
 
         [Required(ErrorMessage = "el campo es requerido")]
         public string Image { get; set; }
-         
+
       
     }
 }

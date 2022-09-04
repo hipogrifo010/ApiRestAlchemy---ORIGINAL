@@ -18,5 +18,7 @@ namespace ApiRestAlchemy.Models
         [Required(ErrorMessage = "el campo es requerido")]
         public string FechaDeCreacion { get; set; }
 
+        public string Genero { get; set; }
+
     }
 }
