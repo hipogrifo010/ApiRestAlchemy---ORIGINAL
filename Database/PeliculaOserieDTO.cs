@@ -5,6 +5,9 @@ namespace ApiRestAlchemy.Models
 {
     public class PeliculaOserieDTO
     {
+        [Key]
+        public int MovieId { get; set; }
+
         [Required(ErrorMessage = "el campo es requerido")]
         public string Titulo { get; set; }
 
@@ -14,7 +17,6 @@ namespace ApiRestAlchemy.Models
         [Required(ErrorMessage = "el campo es requerido")]
         public string FechaDeCreacion { get; set; }
 
-        public string Genero { get; set; }
 
     }
 }

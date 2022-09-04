@@ -26,11 +26,9 @@ namespace ApiRestAlchemy.Models
         public string PersonajesAsociados { get; set; }
 
 
-        [Required(ErrorMessage = "el campo es requerido")]
+
         public int GenreId { get; set; }
 
-        [ForeignKey("GenreId")]
-        public virtual Genero Genero { get; set; }
 
 
     }

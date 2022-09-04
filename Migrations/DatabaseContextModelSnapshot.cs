@@ -154,8 +154,6 @@ namespace ApiRestAlchemy.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.HasIndex("GenreId");
-
                     b.ToTable("PeliculaOserie", (string)null);
 
                     b.HasData(
@@ -179,6 +177,31 @@ namespace ApiRestAlchemy.Migrations
                             PersonajesAsociados = "Woody,Buzz Lightyear,Andy",
                             Titulo = "Toy Story"
                         });
+                });
+
+            modelBuilder.Entity("ApiRestAlchemy.Models.PeliculaOserieDTO", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieId"), 1L, 1);
+
+                    b.Property<string>("FechaDeCreacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imagen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MovieId");
+
+                    b.ToTable("PeliculaOserieDTO");
                 });
 
             modelBuilder.Entity("ApiRestAlchemy.Models.Personaje", b =>
@@ -391,17 +414,6 @@ namespace ApiRestAlchemy.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ApiRestAlchemy.Models.PeliculaOserie", b =>
-                {
-                    b.HasOne("ApiRestAlchemy.Models.Genero", "Genero")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("ApiRestAlchemy.Models.Personaje", b =>

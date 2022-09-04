@@ -15,6 +15,7 @@ namespace ApiRestAlchemy.Models
         [Required(ErrorMessage = "el campo es requerido")]
         public string Image { get; set; }
 
+
       
     }
 }

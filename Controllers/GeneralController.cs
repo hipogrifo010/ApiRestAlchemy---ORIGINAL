@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Principal;
 
 namespace ApiRestAlchemy.Controllers
 {
 
 
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
@@ -24,6 +25,9 @@ namespace ApiRestAlchemy.Controllers
             _context = context;
         }
 
+
+        /////////////Personaje///////////
+  
         /// <acceso>
         /// https://localhost:7105/Listado/characters
         /// </Retorna Listado de personajes>
@@ -37,7 +41,25 @@ namespace ApiRestAlchemy.Controllers
                 .ToListAsync();
         }
 
+        //POST
 
+        /// <PostMovie>
+        /// 
+        /// </ADVERTENCIA!,CharacterId es identidad ,es decir dejar en Valor 0>
+
+        [HttpPost("/ListadoPost/characters")]
+        public async Task<ActionResult<Personaje>> PostCharacter([FromBody] PersonajeDTO personajeDTO)
+        {
+
+            Personaje persona = new()
+            {
+
+            };
+            _context.Personajes.Add(personaje);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("ListadoPersonajes", new { id = personaje.CharacterId }, personaje);
+
+        }
 
         /// <acceso>
         /// Utilizar Query a partir de las siguientes URL
@@ -109,6 +131,10 @@ namespace ApiRestAlchemy.Controllers
 
         }
 
+
+
+
+        ////////////////Pelicula/////////
 
         /// <acceso>
         /// https://localhost:7105/Listado/movies
@@ -207,7 +233,23 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-       
+        //POST
+
+        /// <PostMovie>
+        /// 
+        /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0>
+
+        [HttpPost("/ListadoPost/movies")]
+        public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody]PeliculaOserie pelicula)
+        {
+            _context.PeliculasOseries.Add(pelicula);
+                await _context.SaveChangesAsync();
+            return CreatedAtAction("ListadoDePeliculas", new { id = pelicula.MovieId }, pelicula);
+
+        }
+
+
+
 
         private static PersonajeDTO PersonajeToDTO(Personaje todoItem) =>
         new PersonajeDTO
@@ -220,6 +262,7 @@ namespace ApiRestAlchemy.Controllers
         private static PeliculaOserieDTO PeliculaOserieToDTO(PeliculaOserie peliculaOserie) =>
         new PeliculaOserieDTO
         {
+           MovieId=peliculaOserie.MovieId,
            Titulo= peliculaOserie.Titulo,
            Imagen= peliculaOserie.Imagen,
            FechaDeCreacion= peliculaOserie.FechaDeCreacion

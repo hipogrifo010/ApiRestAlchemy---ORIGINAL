@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using SendGrid.Helpers.Mail;
+﻿using SendGrid.Helpers.Mail;
 using SendGrid;
 
 namespace ApiRestAlchemy.Services

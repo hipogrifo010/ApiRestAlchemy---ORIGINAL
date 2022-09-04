@@ -120,6 +120,10 @@ namespace ApiRestAlchemy.Database
             base.OnModelCreating(modelBuilder);
 
         }
+
+
+           //en caso de usar CodeFirst a Sql
+        public DbSet<ApiRestAlchemy.Models.PeliculaOserieDTO>? PeliculaOserieDTO { get; set; }
         
         
     }
