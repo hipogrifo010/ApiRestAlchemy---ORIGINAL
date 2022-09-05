@@ -12,7 +12,7 @@ namespace ApiRestAlchemy.Controllers
 
 
    [Route("api/[controller]")]
-   [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+   //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
@@ -410,45 +410,24 @@ namespace ApiRestAlchemy.Controllers
 
 
         private static PersonajeDTO PersonajeToDTO(Personaje todoItem) =>
-        new PersonajeDTO
+        new ()
         {
           CharacterId=todoItem.CharacterId,
           Nombre = todoItem.Nombre,
           Imagen = todoItem.Imagen,
 
         };
-        private static PersonajeDTOdos PersonajeDTODOS(Personaje todoItem) =>
-            new PersonajeDTOdos
-            {
-                CharacterId = todoItem.CharacterId,
-
-                Nombre = todoItem.Nombre,
-                Imagen = todoItem.Imagen,
-                Edad=todoItem.Edad,
-                Peso=todoItem.Peso,
-                Historia=todoItem.Historia,
-                MovieId=todoItem.MovieId
-            };
+      
 
         private static PeliculaOserieDTO PeliculaOserieToDTO(PeliculaOserie peliculaOserie) =>
-        new PeliculaOserieDTO
+        new()
         {
            MovieId=peliculaOserie.MovieId,
            Titulo= peliculaOserie.Titulo,
            Imagen= peliculaOserie.Imagen,
            FechaDeCreacion= peliculaOserie.FechaDeCreacion
         };
-        private static PeliculaDTOtoPost PeliculaDTOtoPost(PeliculaOserie peliculaOserie) =>
-             new PeliculaDTOtoPost
-             {
-                 MovieId = peliculaOserie.MovieId,
-                 Titulo = peliculaOserie.Titulo,
-                 Imagen = peliculaOserie.Imagen,
-                 FechaDeCreacion = peliculaOserie.FechaDeCreacion,
-                 Calificacion= peliculaOserie.Calificacion,
-                 PersonajesAsociados=peliculaOserie.PersonajesAsociados,
-                 GenreId=peliculaOserie.GenreId
-             };
+       
 
 
     }
