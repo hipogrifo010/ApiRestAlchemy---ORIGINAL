@@ -76,6 +76,58 @@ namespace ApiRestAlchemy.Controllers
         /// </Retorna Query de busqueda de Characters>
 
 
+
+        /// <PUTCHARACTERS>
+        /// 
+        /// </ingresar id del Personaje como Value,y tambien dentro del BODY>
+        [HttpPut("/Listado/characters/{id}")]
+        public async Task<ActionResult<Personaje>> CharacterModification(int id, PersonajeDTOdos characterput)
+        {
+
+            Personaje personaje = new()
+            {
+                CharacterId = characterput.CharacterId,
+                Nombre = characterput.Nombre,
+                Imagen = characterput.Imagen,
+                Edad = characterput.Edad,
+                Peso = characterput.Peso,
+                Historia = characterput.Historia,
+                MovieId = characterput.MovieId
+            };
+
+            if (id != personaje.CharacterId)
+            {
+                return BadRequest();
+            }
+
+
+
+            _context.Entry(personaje).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PersonajeExist(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+            return Ok();
+        }
+
+
+
         [HttpGet("/Busqueda/Characters")]
 
         public async Task<ActionResult<List<PersonajeDTO>>> SearchCharacters([FromQuery] string? name, int? age, int? movies)
@@ -111,7 +163,7 @@ namespace ApiRestAlchemy.Controllers
         /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
  
         [HttpGet("/DetalleCharacter/{CharacterName}")]
-        public ActionResult IndexCharacter(string CharacterName)
+        public ActionResult DetalleCharacter(string CharacterName)
         {
 
 
@@ -154,6 +206,33 @@ namespace ApiRestAlchemy.Controllers
                 .Select(x => PeliculaOserieToDTO(x))
                 .ToListAsync();
         }
+
+
+
+        /// <PostMovie>
+        /// 
+        /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0>
+
+        [HttpPost("/ListadoPost/movies")]
+        public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody] PeliculaDTOtoPost peliculaDTO)
+        {
+            PeliculaOserie peliculaoSerie = new()
+            {
+                MovieId = peliculaDTO.MovieId,
+                Titulo = peliculaDTO.Titulo,
+                Imagen = peliculaDTO.Imagen,
+                FechaDeCreacion = peliculaDTO.FechaDeCreacion,
+                Calificacion = peliculaDTO.Calificacion,
+                PersonajesAsociados = peliculaDTO.PersonajesAsociados,
+                GenreId = peliculaDTO.GenreId
+            };
+            _context.PeliculasOseries.Add(peliculaoSerie);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("ListadoDePeliculas", new { id = peliculaoSerie.MovieId }, peliculaoSerie);
+
+        }
+
+
 
 
         /// <acceso>
@@ -207,13 +286,13 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-        /// <acceso>
+        /// <GETDETALLE>
         /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/DetalleCharacter/Shrek"
         /// https://localhost:7105/DetalleMovie/
         /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
 
         [HttpGet("/DetalleMovie/{MovieName}")]
-        public ActionResult Index(string MovieName)
+        public ActionResult DetalleMovie(string MovieName)
         {
 
             int peliculaId = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
@@ -240,33 +319,63 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-        //POST
-
-        /// <PostMovie>
+        /// <PUTMOVIE>
         /// 
-        /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0>
-
-        [HttpPost("/ListadoPost/movies")]
-        public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody]PeliculaDTOtoPost peliculaDTO)
+        /// </ingresar id de la pelicula como Value, y tambien dentro del BODY>
+        [HttpPut("/Listado/Movie/{id}")]
+        public async Task<ActionResult<PeliculaOserie>> MovieModification(int id,PeliculaDTOtoPost peliput)
         {
+
             PeliculaOserie peliculaoSerie = new()
             {
-                MovieId = peliculaDTO.MovieId,
-                Titulo = peliculaDTO.Titulo,
-                Imagen = peliculaDTO.Imagen,
-                FechaDeCreacion = peliculaDTO.FechaDeCreacion,
-                Calificacion = peliculaDTO.Calificacion,
-                PersonajesAsociados = peliculaDTO.PersonajesAsociados,
-                GenreId = peliculaDTO.GenreId
+                MovieId = peliput.MovieId,
+                Titulo = peliput.Titulo,
+                Imagen = peliput.Imagen,
+                FechaDeCreacion = peliput.FechaDeCreacion,
+                Calificacion = peliput.Calificacion,
+                PersonajesAsociados = peliput.PersonajesAsociados,
+                GenreId = peliput.GenreId
             };
-            _context.PeliculasOseries.Add(peliculaoSerie);
-                await _context.SaveChangesAsync();
-            return CreatedAtAction("ListadoDePeliculas", new { id = peliculaoSerie.MovieId }, peliculaoSerie);
 
+            if (id!=peliculaoSerie.MovieId)
+            {
+                return BadRequest();
+            }
+
+         
+
+            _context.Entry(peliculaoSerie).State=EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if(!PeliculaExist(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+                
+            }
+            return Ok();
         }
 
-
-
+        private bool PeliculaExist(int id)
+        {
+            return _context.PeliculasOseries.Any(e => e.MovieId == id);
+        }
+        private bool PersonajeExist(int id)
+        {
+            return _context.Personajes.Any(e => e.CharacterId == id);
+        }
 
         private static PersonajeDTO PersonajeToDTO(Personaje todoItem) =>
         new PersonajeDTO
