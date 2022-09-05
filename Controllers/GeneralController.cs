@@ -226,8 +226,8 @@ namespace ApiRestAlchemy.Controllers
 
 
         /// <GETDETALLEMOVIE>
-        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/DetalleCharacter/Shrek"
-        /// https://localhost:7105/DetalleMovie/
+        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/Detalle/Movie/Shrek"
+        /// https://localhost:7105/Detalle/Movie/
         /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
 
         [HttpGet("/Detalle/Movie/{MovieName}")]
