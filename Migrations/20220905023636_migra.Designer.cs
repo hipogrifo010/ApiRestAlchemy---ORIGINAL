@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestAlchemy.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220905004059_migra")]
+    [Migration("20220905023636_migra")]
     partial class migra
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
