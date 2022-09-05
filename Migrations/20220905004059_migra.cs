@@ -63,24 +63,6 @@ namespace ApiRestAlchemy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PeliculaOserie",
-                columns: table => new
-                {
-                    MovieId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaDeCreacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Calificacion = table.Column<int>(type: "int", nullable: false),
-                    PersonajesAsociados = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PeliculaOserie", x => x.MovieId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PeliculaOserieDTO",
                 columns: table => new
                 {
@@ -202,6 +184,30 @@ namespace ApiRestAlchemy.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PeliculaOserie",
+                columns: table => new
+                {
+                    MovieId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaDeCreacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Calificacion = table.Column<int>(type: "int", nullable: false),
+                    PersonajesAsociados = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PeliculaOserie", x => x.MovieId);
+                    table.ForeignKey(
+                        name: "FK_PeliculaOserie_Genero_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genero",
+                        principalColumn: "GenreId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Personaje",
                 columns: table => new
                 {
@@ -228,20 +234,22 @@ namespace ApiRestAlchemy.Migrations
             migrationBuilder.InsertData(
                 table: "Genero",
                 columns: new[] { "GenreId", "Image", "Nombre" },
-                values: new object[,]
-                {
-                    { 1, " ", "Aventura/Fantasia" },
-                    { 2, " ", "Infantil/Fantasia" }
-                });
+                values: new object[] { 1, " ", "Aventura/Fantasia" });
+
+            migrationBuilder.InsertData(
+                table: "Genero",
+                columns: new[] { "GenreId", "Image", "Nombre" },
+                values: new object[] { 2, " ", "Infantil/Fantasia" });
 
             migrationBuilder.InsertData(
                 table: "PeliculaOserie",
                 columns: new[] { "MovieId", "Calificacion", "FechaDeCreacion", "GenreId", "Imagen", "PersonajesAsociados", "Titulo" },
-                values: new object[,]
-                {
-                    { 1, 4, "22/04/2001", 1, " ", "Shrek,Burro,Fiora", "Shrek" },
-                    { 2, 4, "22/11/1995", 2, " ", "Woody,Buzz Lightyear,Andy", "Toy Story" }
-                });
+                values: new object[] { 1, 4, "22/04/2001", 1, " ", "Shrek,Burro,Fiora", "Shrek" });
+
+            migrationBuilder.InsertData(
+                table: "PeliculaOserie",
+                columns: new[] { "MovieId", "Calificacion", "FechaDeCreacion", "GenreId", "Imagen", "PersonajesAsociados", "Titulo" },
+                values: new object[] { 2, 4, "22/11/1995", 2, " ", "Woody,Buzz Lightyear,Andy", "Toy Story" });
 
             migrationBuilder.InsertData(
                 table: "Personaje",
@@ -294,6 +302,11 @@ namespace ApiRestAlchemy.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PeliculaOserie_GenreId",
+                table: "PeliculaOserie",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Personaje_MovieId",
                 table: "Personaje",
                 column: "MovieId");
@@ -317,9 +330,6 @@ namespace ApiRestAlchemy.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Genero");
-
-            migrationBuilder.DropTable(
                 name: "PeliculaOserieDTO");
 
             migrationBuilder.DropTable(
@@ -333,6 +343,9 @@ namespace ApiRestAlchemy.Migrations
 
             migrationBuilder.DropTable(
                 name: "PeliculaOserie");
+
+            migrationBuilder.DropTable(
+                name: "Genero");
         }
     }
 }

@@ -154,6 +154,8 @@ namespace ApiRestAlchemy.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("GenreId");
+
                     b.ToTable("PeliculaOserie", (string)null);
 
                     b.HasData(
@@ -414,6 +416,17 @@ namespace ApiRestAlchemy.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ApiRestAlchemy.Models.PeliculaOserie", b =>
+                {
+                    b.HasOne("ApiRestAlchemy.Models.Genero", "Genero")
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("ApiRestAlchemy.Models.Personaje", b =>

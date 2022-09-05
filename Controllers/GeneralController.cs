@@ -48,16 +48,23 @@ namespace ApiRestAlchemy.Controllers
         /// </ADVERTENCIA!,CharacterId es identidad ,es decir dejar en Valor 0>
 
         [HttpPost("/ListadoPost/characters")]
-        public async Task<ActionResult<Personaje>> PostCharacter([FromBody] PersonajeDTO personajeDTO)
+        public async Task<ActionResult<Personaje>> PostCharacter([FromBody] PersonajeDTOdos personajeDTOdos)
         {
-
-            Personaje persona = new()
+           Personaje persona = new()
             {
 
-            };
-            _context.Personajes.Add(personaje);
+               CharacterId = personajeDTOdos.CharacterId,
+               Nombre = personajeDTOdos.Nombre,
+               Imagen = personajeDTOdos.Imagen,
+               Edad = personajeDTOdos.Edad,
+               Peso = personajeDTOdos.Peso,
+               Historia = personajeDTOdos.Historia,
+               MovieId = personajeDTOdos.MovieId
+           };
+           _context.Personajes.Add(persona);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("ListadoPersonajes", new { id = personaje.CharacterId }, personaje);
+
+            return CreatedAtAction("ListadoPersonajes", new { id =persona.CharacterId }, persona);
 
         }
 
@@ -240,11 +247,21 @@ namespace ApiRestAlchemy.Controllers
         /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0>
 
         [HttpPost("/ListadoPost/movies")]
-        public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody]PeliculaOserie pelicula)
+        public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody]PeliculaDTOtoPost peliculaDTO)
         {
-            _context.PeliculasOseries.Add(pelicula);
+            PeliculaOserie peliculaoSerie = new()
+            {
+                MovieId = peliculaDTO.MovieId,
+                Titulo = peliculaDTO.Titulo,
+                Imagen = peliculaDTO.Imagen,
+                FechaDeCreacion = peliculaDTO.FechaDeCreacion,
+                Calificacion = peliculaDTO.Calificacion,
+                PersonajesAsociados = peliculaDTO.PersonajesAsociados,
+                GenreId = peliculaDTO.GenreId
+            };
+            _context.PeliculasOseries.Add(peliculaoSerie);
                 await _context.SaveChangesAsync();
-            return CreatedAtAction("ListadoDePeliculas", new { id = pelicula.MovieId }, pelicula);
+            return CreatedAtAction("ListadoDePeliculas", new { id = peliculaoSerie.MovieId }, peliculaoSerie);
 
         }
 
@@ -259,6 +276,19 @@ namespace ApiRestAlchemy.Controllers
           Imagen = todoItem.Imagen,
 
         };
+        private static PersonajeDTOdos PersonajeDTODOS(Personaje todoItem) =>
+            new PersonajeDTOdos
+            {
+                CharacterId = todoItem.CharacterId,
+
+                Nombre = todoItem.Nombre,
+                Imagen = todoItem.Imagen,
+                Edad=todoItem.Edad,
+                Peso=todoItem.Peso,
+                Historia=todoItem.Historia,
+                MovieId=todoItem.MovieId
+            };
+
         private static PeliculaOserieDTO PeliculaOserieToDTO(PeliculaOserie peliculaOserie) =>
         new PeliculaOserieDTO
         {
@@ -267,7 +297,18 @@ namespace ApiRestAlchemy.Controllers
            Imagen= peliculaOserie.Imagen,
            FechaDeCreacion= peliculaOserie.FechaDeCreacion
         };
-  
+        private static PeliculaDTOtoPost PeliculaDTOtoPost(PeliculaOserie peliculaOserie) =>
+             new PeliculaDTOtoPost
+             {
+                 MovieId = peliculaOserie.MovieId,
+                 Titulo = peliculaOserie.Titulo,
+                 Imagen = peliculaOserie.Imagen,
+                 FechaDeCreacion = peliculaOserie.FechaDeCreacion,
+                 Calificacion= peliculaOserie.Calificacion,
+                 PersonajesAsociados=peliculaOserie.PersonajesAsociados,
+                 GenreId=peliculaOserie.GenreId
+             };
+
 
     }
 

@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace ApiRestAlchemy.Models
 {
-    [Table("PeliculaOserie")]
-    public class PeliculaOserie
+    public class PeliculaDTOtoPost
     {
 
         [Key]
@@ -25,12 +24,10 @@ namespace ApiRestAlchemy.Models
         [Required(ErrorMessage = "el campo es requerido")]
         public string PersonajesAsociados { get; set; }
 
-
-
+        [Required(ErrorMessage = "el campo es requerido")]
         public int GenreId { get; set; }
 
-        [ForeignKey("GenreId")]
-        public virtual Genero Genero { get; set; }
+
 
     }
 }

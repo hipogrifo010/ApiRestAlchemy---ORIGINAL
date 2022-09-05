@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestAlchemy.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220904225734_migra")]
+    [Migration("20220905004059_migra")]
     partial class migra
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,6 +155,8 @@ namespace ApiRestAlchemy.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MovieId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("PeliculaOserie", (string)null);
 
@@ -416,6 +418,17 @@ namespace ApiRestAlchemy.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ApiRestAlchemy.Models.PeliculaOserie", b =>
+                {
+                    b.HasOne("ApiRestAlchemy.Models.Genero", "Genero")
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("ApiRestAlchemy.Models.Personaje", b =>
